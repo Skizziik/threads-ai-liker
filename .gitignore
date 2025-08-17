@@ -10,3 +10,6 @@ __pycache__/
 
 # macOS specific
 .DS_Store
+
+# User session data
+user_data/

@@ -28,7 +28,7 @@ LIKE_BUTTON_SELECTOR = "button[aria-label='Нравится']" # Может бы
 LIKE_COUNT_SELECTOR = "a[href$='/likes/']" # Пример: ищем ссылку, ведущую на страницу лайков
 
 # Селектор для поля поиска
-SEARCH_INPUT_SELECTOR = "input[aria-label='Поиск']" # Может быть 'Search'
+SEARCH_INPUT_SELECTOR = "input[aria-label='Search']" # Может быть 'Search'
 
 async def main():
     async with async_playwright() as p:
@@ -44,9 +44,15 @@ async def main():
             context = await browser.new_context()
             page = await context.new_page()
             await page.goto("https://www.threads.net")
+
+            # Ждем, пока пользователь закроет страницу (вкладку)
+            print("Ожидаем закрытия окна/вкладки браузера...")
+            closed_future = asyncio.Future()
+            page.on("close", lambda: closed_future.set_result(None))
+            await closed_future
             
-            # Ждем, пока пользователь закроет браузер
-            await browser.wait_for_event("disconnected")
+            # Создаем папку, если ее нет
+            Path(USER_DATA_DIR).mkdir(exist_ok=True)
             
             # Сохраняем состояние аутентификации
             await context.storage_state(path=f"{USER_DATA_DIR}/storage_state.json")
@@ -65,9 +71,13 @@ async def main():
             await page.goto("https://www.threads.net", wait_until="load", timeout=60000)
             await asyncio.sleep(random.uniform(3, 5))
 
+            # Делаем скриншот для отладки
+            await page.screenshot(path="debug_screenshot.png")
+            print("Сделан скриншот 'debug_screenshot.png'. Пожалуйста, посмотрите на него, чтобы понять, как выглядит страница и где находится поле поиска.")
+
             # Кликаем на иконку поиска, чтобы активировать поле ввода
             # На Threads может потребоваться сначала кликнуть на иконку лупы
-            search_icon_selector = "a[aria-label='Поиск']" # Может быть 'Search'
+            search_icon_selector = "a[aria-label='Search']" # Может быть 'Search'
             try:
                 await page.locator(search_icon_selector).first.click(timeout=15000)
                 print("Кликнули на иконку поиска.")
