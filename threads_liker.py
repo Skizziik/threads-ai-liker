@@ -28,7 +28,7 @@ LIKE_BUTTON_SELECTOR = "button[aria-label='Нравится']" # Может бы
 LIKE_COUNT_SELECTOR = "a[href$='/likes/']" # Пример: ищем ссылку, ведущую на страницу лайков
 
 # Селектор для поля поиска
-SEARCH_INPUT_SELECTOR = "input[aria-label='Search']" # Может быть 'Search'
+SEARCH_INPUT_SELECTOR = "input[aria-label='Поиск']" # Может быть 'Search'
 
 async def main():
     async with async_playwright() as p:
