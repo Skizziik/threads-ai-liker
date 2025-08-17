@@ -1,0 +1,12 @@
+# Python virtual environment
+.venv/
+
+# Folder for user session data (IMPORTANT for security)
+user_data/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# macOS specific
+.DS_Store
