@@ -13,3 +13,9 @@ __pycache__/
 
 # User session data
 user_data/
+
+# VS Code specific
+.vscode/
+
+# Script-generated files
+debug_screenshot.png

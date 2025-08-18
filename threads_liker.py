@@ -28,7 +28,7 @@ LIKE_BUTTON_SELECTOR = "button[aria-label='Нравится']" # Может бы
 LIKE_COUNT_SELECTOR = "a[href$='/likes/']" # Пример: ищем ссылку, ведущую на страницу лайков
 
 # Селектор для поля поиска
-SEARCH_INPUT_SELECTOR = "input[aria-label='Поиск']" # Может быть 'Search'
+search_icon_selector = "svg[aria-label='Поиск']" # Может быть 'Search'
 
 async def main():
     async with async_playwright() as p:
@@ -84,7 +84,7 @@ async def main():
             except TimeoutError:
                 print("Не удалось найти иконку поиска, возможно, поле ввода уже доступно.")
 
-            await page.locator(SEARCH_INPUT_SELECTOR).first.fill(SEARCH_QUERY)
+            await page.locator('input[aria-label="Search"]').first.fill(SEARCH_QUERY) # Используем более конкретный селектор для поля ввода
             await page.keyboard.press("Enter")
             print(f"Выполнен поиск по запросу: {SEARCH_QUERY}")
             
